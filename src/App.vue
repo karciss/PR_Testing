@@ -24,12 +24,25 @@ const servicios = [
   { icono: '🎮', titulo: 'Videojuegos', descripcion: 'Juegos 2D, 3D y realidad virtual.' },
   { icono: '🔧', titulo: 'Soporte técnico', descripcion: 'Mantenimiento y mejora de sistemas.' },
 ]
+
+const formulario = ref({ nombre: '', correo: '', mensaje: '' })
+const estado = ref('')
+
+function enviarFormulario() {
+  const { nombre, correo, mensaje } = formulario.value
+  if (!nombre.trim() || !correo.trim() || !mensaje.trim()) {
+    estado.value = 'error'
+    return
+  }
+  estado.value = 'enviado'
+  formulario.value = { nombre: '', correo: '', mensaje: '' }
+}
 </script>
 
 <template>
   <header class="encabezado">
     <h1>PR_Testing - Carolina</h1>
-    <p class="subtitulo">Repositorio oficial de BolivianWorks</p>
+    <p class="subtitulo">Práctica 2.1 · Repositorio oficial de BolivianWorks</p>
   </header>
 
   <main class="contenido">
@@ -51,6 +64,27 @@ const servicios = [
           <span class="proyectos-categoria">{{ proyecto.categoria }}</span>
         </article>
       </div>
+    </section>
+
+    <section class="contacto">
+      <h2>Contacto</h2>
+      <form class="contacto-formulario" @submit.prevent="enviarFormulario">
+        <label>
+          Nombre
+          <input v-model="formulario.nombre" type="text" />
+        </label>
+        <label>
+          Correo
+          <input v-model="formulario.correo" type="email" />
+        </label>
+        <label>
+          Mensaje
+          <textarea v-model="formulario.mensaje" rows="4"></textarea>
+        </label>
+        <button type="submit" class="contacto-boton">Enviar</button>
+      </form>
+      <p v-if="estado === 'error'" class="contacto-error">Completa todos los campos.</p>
+      <p v-if="estado === 'enviado'" class="contacto-exito">¡Mensaje enviado! Gracias por escribirnos.</p>
     </section>
 
     <section class="servicios">
